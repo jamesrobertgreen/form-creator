@@ -143,7 +143,7 @@ public class Main {
             String value = (String) pair.getValue();
             if(! key.equals("name") && ! key.equals("componentType")){
                 attr = doc.createAttribute(key);
-                attr.setValue(key);
+                attr.setValue(value);
                 field.setAttributeNode(attr);
             }
 
