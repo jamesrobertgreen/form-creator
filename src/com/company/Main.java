@@ -31,6 +31,7 @@ public class Main {
 
         attrs.put("name","name");
         attrs.put("componentType","guidetextbox");
+        attrs.put("maxChars","70");
         fieldMap.put("test1",attrs);
         fieldMap.put("test2",attrs);
 
@@ -89,7 +90,7 @@ public class Main {
             Map.Entry pair = (Map.Entry)it.next();
             Map <String,Map> component = new HashMap<String, Map>();
             component = (Map<String, Map>) pair.getValue();
-            Element newComponent = createComponentElement(doc,rootElement,component);
+            Element newComponent = createComponentElement(doc,rootElement, (String) pair.getKey(),component);
             if (newComponent != null){
                 rootElement = newComponent;
             }
@@ -99,9 +100,8 @@ public class Main {
         return rootElement;
     }
 
-    private static Element createComponentElement(Document doc, Element rootElement, Map component){
+    private static Element createComponentElement(Document doc, Element rootElement, String fieldName, Map component){
 
-        String fieldName = (String) component.get("name");
         String componentType = (String) component.get("componentType");
 
         if (componentType == null || fieldName == null) {
@@ -132,9 +132,24 @@ public class Main {
         attr.setValue("gdocs/components/forms/" + componentType);
         field.setAttributeNode(attr);
 
-        attr = doc.createAttribute(fieldName);
+        attr = doc.createAttribute("name");
         attr.setValue(fieldName);
         field.setAttributeNode(attr);
+
+        Iterator it = component.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            String key = (String) pair.getKey();
+            String value = (String) pair.getValue();
+            if(! key.equals("name") && ! key.equals("componentType")){
+                attr = doc.createAttribute(key);
+                attr.setValue(key);
+                field.setAttributeNode(attr);
+            }
+
+        }
+
+
 
         return rootElement;
     }
