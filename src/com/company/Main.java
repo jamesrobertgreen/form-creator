@@ -54,7 +54,6 @@ public class Main {
             DOMSource source = new DOMSource(fieldsXML);
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             transformer.transform(source, result);
 
             xmlString = result.getWriter().toString();
